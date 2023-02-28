@@ -1,73 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import React, { Component } from 'react';
+import { useState } from "react";
+import Clock from "./components/Clock";
+import { Button, StyleSheet, View, StatusBar } from 'react-native';
 
-export default class App extends Component {
+const App = () => {
+    const [on, setOn] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = { on: false };
-  }
-
-  render() {
-    return (
-      <View style={this.styles.container}>
-        {this.state.on && <Clock />}
-        <Button
-          title={`Turn clock ${this.state.on ? 'off' : 'on'}`}
-          onPress={() => { this.setState({ on: !this.state.on }) }}
-        />
-        <StatusBar style="dark" />
-      </View>
-    );
-  }
-
-  styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
-}
-
-class Clock extends Component {
-  tick = 0;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      time: '00:00',
+    const toggleClock = () => {
+        setOn(!on);
     };
-  }
 
-  render() {
-    console.log('render called');
     return (
-      <View>
-        <Text>
-          {this.state.time}
-        </Text>
-      </View>
+        <View style={styles.container}>
+            {on && <Clock />}
+            <Button
+                title={`Turn clock ${on ? 'off' : 'on'}`}
+                onPress={toggleClock}
+            />
+            <StatusBar style="dark" />
+        </View>
     );
-  }
-
-  componentDidMount() {
-    console.log('componentDidMount called');
-    this.tick = setInterval(() => {
-      this.setState({
-        time: new Date().toLocaleTimeString(),
-      });
-    }, 1000);
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate called');
-  }
-
-  componentWillUnmount() {
-    console.log('componentWillUnmount called');
-    clearInterval(this.tick);
-  }
 }
+
+styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
+
+export default App;
